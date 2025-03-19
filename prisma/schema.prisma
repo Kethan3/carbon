@@ -13,4 +13,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model 
+model Student {
+  id           String @id @default(uuid())
+  name         String
+  dateofBirth  String
+  aadharNumber String @unique
+}
+
+model Professor {
+  id           String @id @default(uuid())
+  name         String
+  seniority    String
+  aadharNumber String @unique
+}
+
+
