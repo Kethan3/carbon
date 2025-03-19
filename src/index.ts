@@ -28,8 +28,6 @@ app.get('/professors', async (c) => {
   return c.json({ professors }, 200);
 });
 
-
-
 app.post("/students", async (c) => {
   const { name, dateofBirth, aadharNumber } = await c.req.json();
 
@@ -57,7 +55,12 @@ app.post("/professors", async (c) => {
 });
 
 app.get('/professors/:professorId/proctorships',async (c)=>{
-       
+  
+  const professorId = c.req.param("professorId");
+  const students = await prismaClient.student.findMany({
+    where: professorId }
+  });
+  return c.json(students);
 
 
 
