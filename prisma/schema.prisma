@@ -14,17 +14,42 @@ datasource db {
 }
 
 model Student {
-  id           String @id @default(uuid())
-  name         String
-  dateofBirth  String
-  aadharNumber String @unique
+  id                String             @id @default(uuid())
+  name              String
+  dateofBirth       String
+  aadharNumber      String             @unique
+  procotrship       Proctorship?
+  LibraryMembership LibraryMembership?
+
 }
 
 model Professor {
-  id           String @id @default(uuid())
+  id           String       @id @default(uuid())
   name         String
   seniority    String
-  aadharNumber String @unique
+  aadharNumber String       @unique
+  proctorship  Proctorship?
 }
 
+model Proctorship {
+  id          String    @id @default(uuid())
+  student     Student   @relation(fields: [studentId], references: [id])
+  studentId   String    @unique
+  professor   Professor @relation(fields: [professorId], references: [id])
+  professorId String    @unique
+}
 
+model LibraryMembership {
+  id         String  @id @default(uuid())
+  student    Student @relation(fields: [studentId], references: [id])
+  studentId  String  @unique
+  issueDate  String
+  expiryDate String
+}
+
+enum Seniority {
+  JUNIOR
+  SENIOR
+  ASSOCIATE
+  HEAD
+}
