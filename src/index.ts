@@ -103,7 +103,40 @@ app.post("/professors/:professorId/proctorships", async (c) => {
   return c.json(proctorship);
 });
 
+app.get("/students/:studentId/library-membership", async (c) => {
+  const studentId = c.req.param("studentId");
+  const membership = await prismaClient.libraryMembership.findUnique({
+    where: { studentId },
+  });
+  return c.json(membership);
+});
 
+app.post("/students/:studentId/library-membership", async (c) => {
+  const studentId = c.req.param("studentId");
+  const { issueDate, expiryDate } = await c.req.json();
+  const membership = await prismaClient.libraryMembership.create({
+    data: { studentId, issueDate, expiryDate },
+  });
+  return c.json(membership);
+});
+
+
+app.patch("/students/:studentId/library-membership", async (c) => {
+  const studentId = c.req.param("studentId");
+  const { issueDate, expiryDate } = await c.req.json();
+  const updatedMembership = await prismaClient.libraryMembership.update({
+    where: { studentId },
+    data: { issueDate, expiryDate },
+  });
+  return c.json(updatedMembership);
+});
+
+
+app.delete("/students/:studentId/library-membership", async (c) => {
+  const studentId = c.req.param("studentId");
+  await prismaClient.libraryMembership.delete({ where: { studentId } });
+  return c.json({ message: "Library membership deleted successfully" });
+});
 
 
 serve(app);
