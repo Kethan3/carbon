@@ -20,15 +20,14 @@ model Student {
   aadharNumber      String             @unique
   procotrship       Proctorship?
   LibraryMembership LibraryMembership?
-
 }
 
 model Professor {
-  id           String       @id @default(uuid())
+  id           String        @id @default(uuid())
   name         String
-  seniority    String
-  aadharNumber String       @unique
-  proctorship  Proctorship?
+  seniority    Seniority
+  aadharNumber String        @unique
+  proctorship  Proctorship[]
 }
 
 model Proctorship {
