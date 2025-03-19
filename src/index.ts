@@ -55,17 +55,55 @@ app.post("/professors", async (c) => {
 });
 
 app.get('/professors/:professorId/proctorships',async (c)=>{
-  
   const professorId = c.req.param("professorId");
   const students = await prismaClient.student.findMany({
-    where: professorId }
+    where: { proctorship: { professorId } },
   });
   return c.json(students);
+});
+
+app.patch("/students/:studentId", async (c) => {
+  const studentId = c.req.param("studentId");
+  const { name, dateofBirth, aadharNumber } = await c.req.json();
+  const updatedStudent = await prismaClient.student.update({
+    where: { id: studentId },
+    data: { name, dateofBirth, aadharNumber },
+  });
+  return c.json(updatedStudent);
+});
+
+app.patch("/professors/:professorId", async (c) => {
+  const professorId = c.req.param("professorId");
+  const { name, seniority, aadharNumber } = await c.req.json();
+  const updatedProfessor = await prismaClient.professor.update({
+    where: { id: professorId },
+    data: { name, seniority, aadharNumber },
+  });
+  return c.json(updatedProfessor);
+});
+
+app.delete("/students/:studentId", async (c) => {
+  const studentId = c.req.param("studentId");
+  await prismaClient.student.delete({ where: { id: studentId } });
+  return c.json({ message: "Student deleted successfully" });
+});
+
+app.delete("/professors/:professorId", async (c) => {
+  const professorId = c.req.param("professorId");
+  await prismaClient.professor.delete({ where: { id: professorId } });
+  return c.json({ message: "Professor deleted successfully" });
+});
+
+app.post("/professors/:professorId/proctorships", async (c) => {
+  const professorId = c.req.param("professorId");
+  const { studentId } = await c.req.json();
+  const proctorship = await prismaClient.proctorship.create({
+    data: { studentId, professorId },
+  });
+  return c.json(proctorship);
+});
 
 
-
-
-})
 
 
 serve(app);
