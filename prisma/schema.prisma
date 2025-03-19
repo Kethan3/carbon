@@ -18,7 +18,7 @@ model Student {
   name              String
   dateofBirth       String
   aadharNumber      String             @unique
-  procotrship       Proctorship?
+  proctorship       Proctorship?
   LibraryMembership LibraryMembership?
 }
 

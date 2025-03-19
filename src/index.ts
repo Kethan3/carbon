@@ -9,12 +9,32 @@ app.get('/', (c) => {
   return c.text('welcome to college database');
 })
 
-app.get('/student',(c)=>{
-const student = prismaClient.student.findMany();
-return c.json({student},200)
+app.get('/students', async (c) => {
+  const student = await prismaClient.student.findMany();
+  return c.json({ student }, 200);
+});
+
+app.get('/students/enriched', async (c) => {
+
+  const student = await prismaClient.student.findMany(
+    {
+      include: { proctorship: { include: { professor: true } } }
+    });
+  return c.json({ student }, 200)
+});
+
+app.get('/professors', async (c) => {
+  const professors = await prismaClient.professor.findMany();
+  return c.json({ professors }, 200);
+});
+
+app.get('/professors/:professorId/proctorships',async (c)=>{
+       
+
+
+
 
 })
-
 
 
 serve(app);
