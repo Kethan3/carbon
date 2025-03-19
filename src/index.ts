@@ -28,6 +28,16 @@ app.get('/professors', async (c) => {
   return c.json({ professors }, 200);
 });
 
+app.post("/students", async (c) => {
+  const { name, dateofBirth , aadharNumber } = await c.req.json();
+
+  const student = await prismaClient.student.create({
+    data: { name,dateofBirth ,  aadharNumber }
+  });
+  return c.json(student, 201);
+});
+
+
 app.get('/professors/:professorId/proctorships',async (c)=>{
        
 
