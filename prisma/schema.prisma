@@ -35,7 +35,7 @@ model Proctorship {
   student     Student   @relation(fields: [studentId], references: [id])
   studentId   String    @unique
   professor   Professor @relation(fields: [professorId], references: [id])
-  professorId String   
+  professorId String
 }
 
 model LibraryMembership {
